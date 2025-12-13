@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NFL TXT TOOL – README</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.55;
+      margin: 2rem;
+      max-width: 900px;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    pre {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+      overflow-x: auto;
+    }
+    h1, h2, h3, h4 { line-height: 1.25; }
+    ul { margin-top: 0.4rem; }
+    .note {
+      padding: 0.9rem 1rem;
+      border-left: 4px solid #0aa;
+      background: #f2fbfb;
+      border-radius: 8px;
+    }
+    .warn {
+      padding: 0.9rem 1rem;
+      border-left: 4px solid #c80;
+      background: #fff8ee;
+      border-radius: 8px;
+    }
+    footer {
+      margin-top: 3rem;
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>NFL TXT TOOL</h1>
+
+<p>
+  Ein simples Python-CLI-Tool zum Abrufen von
+  <strong>NFL-Quoten</strong> und <strong>NFL-Ergebnissen</strong>
+  und zum Export als <strong>TXT-Dateien</strong>. Created by Stephan Lauermann. AI assisted by ChatGPT.
+</p>
+
+<h2>Funktionen</h2>
+<ul>
+  <li>Abruf von <strong>NFL Moneyline-Quoten (h2h)</strong> für eine NFL-Week (Do–Di)</li>
+  <li>Abruf von <strong>NFL-Endergebnissen</strong> für eine NFL-Week (Do–Di)</li>
+  <li>TXT-Export mit klaren, einheitlichen Zeilenformaten</li>
+  <li>Zeitzonen-Umrechnung auf <strong>Europe/Berlin</strong></li>
+  <li>CLI-Menü mit Datums-Eingabe (<code>TT.MM.JJJJ</code>)</li>
+</ul>
+
+<h2>Voraussetzungen</h2>
+<ul>
+  <li>Python <strong>3.9 oder höher</strong></li>
+  <li>Python-Paket <code>requests</code></li>
+  <li>Internetverbindung</li>
+  <li>API-Key von <strong>The Odds API</strong></li>
+</ul>
+
+<h3>Installation</h3>
+<pre><code>python -m pip install -U requests</code></pre>
+
+<p class="note">
+  <strong>Windows-Hinweis:</strong><br />
+  Falls es Probleme mit der Zeitzone gibt, installiere zusätzlich:
+</p>
+<pre><code>python -m pip install -U tzdata</code></pre>
+
+<h2>Konfiguration (API-Key)</h2>
+
+<p>
+  Für den Abruf der Quoten wird ein API-Key von
+  <strong>The Odds API</strong> benötigt.
+</p>
+
+<p>
+  Der API-Key wird <strong>nicht im Code gespeichert</strong>,
+  sondern über die Umgebungsvariable
+  <code>ODDS_API_KEY</code> geladen.
+</p>
+
+<h3>API-Key setzen</h3>
+
+<h4>Windows (PowerShell)</h4>
+<pre><code>setx ODDS_API_KEY "DEIN_API_KEY"</code></pre>
+<p>Danach ein neues Terminal öffnen.</p>
+
+<h4>Linux / macOS</h4>
+<pre><code>export ODDS_API_KEY="DEIN_API_KEY"</code></pre>
+
+<p class="note">
+  Das Script liest den Key automatisch mit
+  <code>os.getenv("ODDS_API_KEY")</code> ein.
+  Fehlt der Key, bricht das Programm mit einer Fehlermeldung ab.
+</p>
+
+<div class="warn">
+  <strong>Sicherheit:</strong><br />
+  Lege deinen API-Key niemals direkt im Code oder in öffentlichen Repositories ab.
+</div>
+
+<h2>Programmstart</h2>
+<pre><code>python nfl_txt_tool.py</code></pre>
+
+<h2>CLI-Menü</h2>
+<pre><code>1) Quoten für eine NFL-Week holen und als TXT speichern
+2) Ergebnisse für eine NFL-Week holen und als TXT speichern
+3) Beenden</code></pre>
+
+<p>
+  Anschließend wird ein Startdatum der NFL-Week im Format
+  <code>TT.MM.JJJJ</code> abgefragt (Donnerstag).
+</p>
+
+<h2>Ausgabe-Dateien</h2>
+
+<h3>NFL-Quoten</h3>
+<p>Dateiname:</p>
+<pre><code>NFL_Quoten_Week_YYYY-MM-DD_bis_YYYY-MM-DD.txt</code></pre>
+
+<p>Format pro Zeile:</p>
+<pre><code>DD.MM.YYYY HH:MM | Awayteam : Hometeam | QuoteAway | QuoteHome</code></pre>
+
+<p>Beispiel:</p>
+<pre><code>14.11.2025 01:10 | New York Jets : Miami Dolphins | 3,48 | 1,36</code></pre>
+
+<p class="note">
+  Die Quoten sind im <strong>Dezimalformat</strong>
+  mit <strong>Komma</strong> als Dezimaltrenner.
+</p>
+
+<h3>NFL-Ergebnisse</h3>
+<p>Dateiname:</p>
+<pre><code>NFL_Ergebnisse_Week_YYYY-MM-DD_bis_YYYY-MM-DD.txt</code></pre>
+
+<p>Format pro Zeile:</p>
+<pre><code>Awayteam : Hometeam AwayScore:HomeScore</code></pre>
+
+<p>Beispiel:</p>
+<pre><code>Dallas Cowboys : Philadelphia Eagles 24:31</code></pre>
+
+<h2>Fehlerbehebung</h2>
+<ul>
+  <li><strong>Fehlender API-Key:</strong> Prüfe, ob <code>ODDS_API_KEY</code> gesetzt ist</li>
+  <li><strong>Keine Spiele gefunden:</strong> Für die NFL-Week existieren evtl. keine Spiele</li>
+  <li><strong>401 / 403 Fehler:</strong> API-Key ungültig oder Kontingent verbraucht</li>
+  <li><strong>Netzwerkfehler:</strong> Internetverbindung prüfen</li>
+</ul>
+
+<h2>Technische Quellen</h2>
+<ul>
+  <li>Quoten: The Odds API (<code>americanfootball_nfl</code>)</li>
+  <li>Ergebnisse: Offizielles ESPN NFL Scoreboard JSON</li>
+  <li>Zeitzone: <code>Europe/Berlin</code></li>
+</ul>
+
+<footer>
+  README.html für <code>nfl_txt_tool.py</code><br />
+  API-Key-Verwaltung über Umgebungsvariablen
+</footer>
+
+</body>
+</html>
